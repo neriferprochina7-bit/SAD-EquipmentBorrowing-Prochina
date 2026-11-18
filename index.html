@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Equipment Borrowing Monitoring System</title>
+
+    <link
+        rel="stylesheet"
+        href="css/style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ==========================================
+         HEADER
+    =========================================== -->
+
+    <header>
+
+        <h1>
+            Equipment Borrowing Monitoring System
+        </h1>
+
+        <nav>
+
+            <a href="index.html">
+                Dashboard
+            </a>
+
+            <button id="logoutBtn">
+                Logout
+            </button>
+
+        </nav>
+
+    </header>
+
+
+
+    <main>
+
+
+        <!-- ==========================================
+             DASHBOARD
+        =========================================== -->
+
+        <section class="dashboard">
+
+
+            <div class="card">
+
+                <h3>
+                    Total Equipment
+                </h3>
+
+                <p id="totalEquipment">
+                    0
+                </p>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <h3>
+                    Available
+                </h3>
+
+                <p id="availableEquipment">
+                    0
+                </p>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <h3>
+                    Borrowed
+                </h3>
+
+                <p id="borrowedEquipment">
+                    0
+                </p>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <h3>
+                    Returned
+                </h3>
+
+                <p id="returnedEquipment">
+                    0
+                </p>
+
+            </div>
+
+
+
+            <div class="card">
+
+                <h3>
+                    Overdue
+                </h3>
+
+                <p id="overdueEquipment">
+                    0
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ==========================================
+             EQUIPMENT MANAGEMENT
+        =========================================== -->
+
+        <section class="panel">
+
+
+            <h2>
+                Equipment
+            </h2>
+
+
+
+            <!-- SEARCH AND FILTER -->
+
+            <div class="form-row">
+
+
+                <input
+                    type="text"
+                    id="equipmentSearch"
+                    placeholder="Search equipment or asset code..."
+                >
+
+
+                <select id="availabilityFilter">
+
+                    <option value="All">
+                        All
+                    </option>
+
+                    <option value="Available">
+                        Available
+                    </option>
+
+                    <option value="Borrowed">
+                        Borrowed
+                    </option>
+
+                </select>
+
+
+            </div>
+
+
+
+            <!-- ADD EQUIPMENT -->
+
+            <h3>
+                Add Equipment
+            </h3>
+
+
+            <form
+                id="equipmentForm"
+                onsubmit="event.preventDefault(); addEquipment();"
+            >
+
+
+                <input
+                    type="text"
+                    id="equipmentName"
+                    placeholder="Equipment Name"
+                    required
+                >
+
+
+                <input
+                    type="text"
+                    id="equipmentCategory"
+                    placeholder="Category"
+                    required
+                >
+
+
+                <input
+                    type="text"
+                    id="assetCode"
+                    placeholder="Asset Code"
+                    required
+                >
+
+
+                <select id="equipmentCondition">
+
+                    <option value="Good">
+                        Good
+                    </option>
+
+                    <option value="Fair">
+                        Fair
+                    </option>
+
+                    <option value="For Repair">
+                        For Repair
+                    </option>
+
+                </select>
+
+
+                <button type="submit">
+                    Add Equipment
+                </button>
+
+
+            </form>
+
+
+
+            <!-- EQUIPMENT TABLE -->
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Asset Code
+                        </th>
+
+                        <th>
+                            Equipment
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Condition
+                        </th>
+
+                        <th>
+                            Availability
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="equipmentTableBody">
+
+                </tbody>
+
+
+            </table>
+
+
+        </section>
+
+
+
+        <!-- ==========================================
+             NEW BORROWING TRANSACTION
+        =========================================== -->
+
+        <section class="panel">
+
+
+            <h2>
+                New Borrowing Transaction
+            </h2>
+
+
+            <form
+                id="borrowingForm"
+                onsubmit="event.preventDefault(); saveBorrowingTransaction();"
+            >
+
+
+                <!-- BORROWER NAME -->
+
+                <input
+                    type="text"
+                    id="borrowerName"
+                    placeholder="Borrower Name"
+                    required
+                >
+
+
+
+                <!-- BORROWER TYPE -->
+
+                <select
+                    id="borrowerType"
+                    required
+                >
+
+                    <option value="">
+                        Select Borrower Type
+                    </option>
+
+                    <option value="Student">
+                        Student
+                    </option>
+
+                    <option value="Faculty">
+                        Faculty
+                    </option>
+
+                    <option value="Staff">
+                        Staff
+                    </option>
+
+                </select>
+
+
+
+                <!-- DEPARTMENT -->
+
+                <input
+                    type="text"
+                    id="department"
+                    placeholder="Department"
+                    required
+                >
+
+
+
+                <!-- EQUIPMENT -->
+
+                <select
+                    id="equipmentSelect"
+                    required
+                >
+
+                    <option value="">
+                        Select Equipment
+                    </option>
+
+                </select>
+
+
+
+                <!-- DATE BORROWED -->
+
+                <label for="dateBorrowed">
+                    Date Borrowed
+                </label>
+
+                <input
+                    type="date"
+                    id="dateBorrowed"
+                    required
+                >
+
+
+
+                <!-- DUE DATE -->
+
+                <label for="dueDate">
+                    Due Date
+                </label>
+
+                <input
+                    type="date"
+                    id="dueDate"
+                    required
+                >
+
+
+
+                <!-- SAVE -->
+
+                <button type="submit">
+                    Save Borrowing Transaction
+                </button>
+
+
+            </form>
+
+
+        </section>
+
+
+
+        <!-- ==========================================
+             BORROWING TRANSACTIONS
+        =========================================== -->
+
+        <section class="panel">
+
+
+            <h2>
+                Borrowing Transactions
+            </h2>
+
+
+
+            <!-- SEARCH AND FILTER -->
+
+            <div class="form-row">
+
+
+                <input
+                    type="text"
+                    id="transactionSearch"
+                    placeholder="Search borrower..."
+                >
+
+
+                <select id="statusFilter">
+
+                    <option value="All">
+                        All
+                    </option>
+
+                    <option value="Borrowed">
+                        Borrowed
+                    </option>
+
+                    <option value="Returned">
+                        Returned
+                    </option>
+
+                    <option value="Overdue">
+                        Overdue
+                    </option>
+
+                </select>
+
+
+            </div>
+
+
+
+            <!-- TRANSACTION TABLE -->
+
+            <table>
+
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Equipment
+                        </th>
+
+                        <th>
+                            Borrower
+                        </th>
+
+                        <th>
+                            Type
+                        </th>
+
+                        <th>
+                            Department
+                        </th>
+
+                        <th>
+                            Date Borrowed
+                        </th>
+
+                        <th>
+                            Due Date
+                        </th>
+
+                        <th>
+                            Date Returned
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                        <th>
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody id="transactionTableBody">
+
+                </tbody>
+
+
+            </table>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ==========================================
+         JAVASCRIPT
+    =========================================== -->
+
+
+    <!-- SUPABASE LIBRARY -->
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+    <!-- SUPABASE CONNECTION -->
+
+    <script src="js/supabase.js"></script>
+
+
+    <!-- LOGIN / LOGOUT -->
+
+    <script src="js/auth.js"></script>
+
+
+    <!-- EQUIPMENT -->
+
+    <script src="js/equipment.js"></script>
+
+
+    <!-- TRANSACTIONS -->
+
+    <script src="js/transactions.js"></script>
+
+
+</body>
+
+</html>
